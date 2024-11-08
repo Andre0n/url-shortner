@@ -9,6 +9,13 @@ class Router {
   #routes = {};
 
   /**
+   * Middleware function
+   * @type {Function | null} - The middleware function
+   * @private
+   */
+  #middleware = null;
+
+  /**
    * Get all routes
    * @returns {object} - All routes
    * @example router.getRoutes();
@@ -46,11 +53,13 @@ class Router {
   }
 
   /**
-   * Add a new router to the router
-   * @param {Router} router - The path of the route
+   * Use a middleware function for the router
+   * @param {Function} middleware - The middleware function
+   * @returns {void}
+   * @example router.use_middleware(json_body); // convert the body to JSON
    */
-  use(router) {
-    this.#routes = { ...this.#routes, ...router.getRoutes() };
+  use_middleware(middleware) {
+    this.#middleware = middleware;
   }
 
   handle_request(req, res) {
@@ -102,6 +111,10 @@ class Router {
           contentType: 'text/plain',
         });
       };
+    }
+
+    if (this.#middleware) {
+      handler = this.#middleware(handler);
     }
 
     handler(req, res);
