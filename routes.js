@@ -15,13 +15,13 @@ router.get('/', (_req, res) => {
 
 router.put(
   '/url',
-  validate_url_request((_request, response) => {
-    const { long_url } = _request.body;
+  validate_url_request((request, response) => {
+    const { long_url } = request.body;
     const exists = UrlModel.find_by_long_url(long_url);
 
     if (exists) {
       return send_response(response, {
-        status: 400,
+        status: 200,
         data: {
           long_url: exists.long_url,
           short_url: exists.short_url,
