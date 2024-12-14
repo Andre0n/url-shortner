@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
-import { url_service } from './url.module.js';
 import { send_response } from '../../utils/response.js';
+import { url_service } from './url.module.js';
 
 export class UrlController {
   /**
