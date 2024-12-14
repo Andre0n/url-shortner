@@ -14,5 +14,6 @@ router.get('/', (_req, res) => {
 });
 
 router.put('/url', validate_url(UrlController.shorten));
+router.get('/:short_url', UrlController.redirect);
 
 export default router;
