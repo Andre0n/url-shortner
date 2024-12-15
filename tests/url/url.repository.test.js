@@ -17,13 +17,16 @@ suite('UrlRepository', () => {
     database.open();
     database.exec(`
         DROP TABLE IF EXISTS urls;
-        CREATE TABLE urls  (
+        CREATE TABLE urls (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           long_url TEXT NOT NULL,
           short_url TEXT NOT NULL,
           created_at TIMESTAMP,
           updated_at TIMESTAMP,
           is_active BOOLEAN DEFAULT TRUE,
+          expires_at TIMESTAMP,
+          redirect_count INTEGER DEFAULT 0,
+          visible BOOLEAN DEFAULT TRUE,
           UNIQUE (long_url, short_url)
         );
     `);
