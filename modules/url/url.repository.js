@@ -35,8 +35,6 @@ export class UrlRepository {
         'INSERT INTO urls (short_url, long_url, created_at, updated_at, expires_at, visible) VALUES (?, ?, ?, ?, ?, ?)'
       );
 
-      console.log(url);
-
       insert.run(
         url.short_url,
         url.long_url,
