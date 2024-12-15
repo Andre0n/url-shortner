@@ -4,7 +4,7 @@ import { json_body } from './utils/json_body.js';
 import { send_response } from './utils/response.js';
 import { Router } from './utils/router.js';
 import { validate_user_request } from './validators/user_request.validator.js';
-import validate_url from './validators/validate_url_request.js';
+import { validate_url_request } from './validators/url_request.validator.js';
 
 const router = new Router();
 
@@ -14,7 +14,7 @@ router.get('/', (_req, res) => {
   send_response(res, { data: { message: 'Hello World!' } });
 });
 
-router.put('/url', validate_url(UrlController.shorten));
+router.put('/url', validate_url_request(UrlController.shorten));
 router.get('/:short_url', UrlController.redirect);
 router.post('/users', validate_user_request(UserController.create));
 

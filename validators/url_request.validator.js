@@ -5,7 +5,7 @@ import { send_response } from '../utils/response.js';
  * @param {Function} handler the handler function to validate
  * @returns {Function} the middleware function
  */
-const validate_url_request = (handler) => {
+export const validate_url_request = (handler) => {
   /**
    * Middleware to validate the request URL
    * @param {import('http').IncomingMessage} request
@@ -56,5 +56,3 @@ const validate_url_request = (handler) => {
 
   return validate;
 };
-
-export default validate_url_request;
