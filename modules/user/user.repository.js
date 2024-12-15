@@ -24,14 +24,14 @@ export class UserRepository {
     this.database.open();
     this.database
       .prepare(
-        'INSERT INTO users (username, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)'
+        'INSERT INTO users (username, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
       )
       .run(
         user_model.username,
         user_model.email,
         user_model.password,
         user_model.created_at,
-        user_model.updated_at
+        user_model.updated_at,
       );
 
     const row = this.database

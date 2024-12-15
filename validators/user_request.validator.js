@@ -42,7 +42,7 @@ export const validate_user_request = (handler) => {
       }
       if (!/^[a-zA-Z0-9_]+$/.test(username)) {
         add_error(
-          'username must contain only letters, numbers and underscores'
+          'username must contain only letters, numbers and underscores',
         );
       }
     }

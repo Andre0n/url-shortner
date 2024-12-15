@@ -26,13 +26,13 @@ export class UrlRepository {
         data.long_url,
         data.short_url,
         data.expires_at,
-        data.visible
+        data.visible,
       );
 
       this.database.open();
 
       const insert = this.database.prepare(
-        'INSERT INTO urls (short_url, long_url, created_at, updated_at, expires_at, visible) VALUES (?, ?, ?, ?, ?, ?)'
+        'INSERT INTO urls (short_url, long_url, created_at, updated_at, expires_at, visible) VALUES (?, ?, ?, ?, ?, ?)',
       );
 
       insert.run(
@@ -41,11 +41,11 @@ export class UrlRepository {
         url.created_at,
         url.updated_at,
         url.expires_at,
-        url.visible | 0
+        url.visible | 0,
       );
 
       const select = this.database.prepare(
-        'SELECT * FROM urls WHERE short_url = ?'
+        'SELECT * FROM urls WHERE short_url = ?',
       );
 
       const row = select.get(url.short_url);
@@ -69,7 +69,7 @@ export class UrlRepository {
       this.database.open();
 
       const select = this.database.prepare(
-        'SELECT * FROM urls WHERE short_url = ?'
+        'SELECT * FROM urls WHERE short_url = ?',
       );
       const row = select.get(shortUrl);
       this.database.close();
@@ -91,7 +91,7 @@ export class UrlRepository {
       this.database.open();
 
       const select = this.database.prepare(
-        'SELECT * FROM urls WHERE long_url = ?'
+        'SELECT * FROM urls WHERE long_url = ?',
       );
       const row = select.get(long_url);
 
