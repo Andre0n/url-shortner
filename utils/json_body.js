@@ -19,12 +19,12 @@ export const json_body = (handler) => {
           }
           const data = Buffer.concat(body).toString();
           request.body = JSON.parse(data);
-          handler(request, response);
+          return handler(request, response);
         } catch (error) {
-          console.error(error);
-          send_response(response, {
+          console.error(error.message);
+          return send_response(response, {
             status: 400,
-            data: { message: 'invalid JSON format' },
+            data: { error: { message: 'invalid JSON format' } },
           });
         }
       });
