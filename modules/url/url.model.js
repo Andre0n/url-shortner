@@ -4,8 +4,9 @@ export class UrlModel {
    * @param {string} long_url
    * @param {string} short_url
    * @param {Date} expires_at - Optional
+   * @param {boolean} visible - Optional
    */
-  constructor(long_url, short_url, expires_at = null) {
+  constructor(long_url, short_url, expires_at = null, visible = true) {
     this.long_url = long_url;
     this.short_url = short_url;
     this.created_at = new Date().toISOString();
@@ -13,7 +14,7 @@ export class UrlModel {
     this.is_active = true;
     this.expires_at = expires_at;
     this.redirect_count = 0;
-    this.visible = true;
+    this.visible = visible;
   }
 
   /**
