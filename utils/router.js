@@ -1,3 +1,4 @@
+import { handle_error } from '../middlewares/handle_error.middleware.js';
 import { send_response } from './response.js';
 
 /**
@@ -79,7 +80,7 @@ class Router {
   handle_request(req, res) {
     const { url: request_url, method: request_method } = req;
     const parsed_url = new URL(
-      `http://${process.env.HOST ?? 'localhost'}${request_url}`,
+      `http://${process.env.HOST ?? 'localhost'}${request_url}`
     );
     const { pathname: path } = parsed_url;
     const method = request_method.toUpperCase();
@@ -88,7 +89,7 @@ class Router {
 
     if (!handler) {
       const routes = Object.keys(this.#routes).filter((route) =>
-        route.includes(':'),
+        route.includes(':')
       );
 
       const matched_route = routes.find((route) => {
@@ -98,7 +99,7 @@ class Router {
 
       if (matched_route) {
         const regex_test = new RegExp(
-          `^${matched_route.replace(/:[^/]+/g, '([^/]+)')}$`,
+          `^${matched_route.replace(/:[^/]+/g, '([^/]+)')}$`
         );
         const url_params = path.match(regex_test).slice(1);
         const route_handler = this.#routes[matched_route][method];
@@ -126,6 +127,8 @@ class Router {
         });
       };
     }
+
+    handler = handle_error(handler);
 
     if (this.#middleware) {
       handler = this.#middleware(handler);
