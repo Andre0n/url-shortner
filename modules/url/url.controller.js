@@ -10,9 +10,9 @@ export class UrlController {
    * @param {ServerResponse} response
    */
   static shorten(request, response) {
-    const { long_url } = request.body;
+    const { long_url, expires, visible } = request.body;
 
-    const shortened_url = url_service.shorten(long_url);
+    const shortened_url = url_service.shorten(long_url, expires, visible);
 
     if (!shortened_url) {
       return send_response(response, {
