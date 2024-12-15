@@ -14,21 +14,40 @@ export class UrlRepository {
    * @param {object} data
    * @param {string} data.short_url
    * @param {string} data.long_url
+   * @param {Date?} data.expires_at
+   * @param {boolean?} data.visible
    * @returns {UrlModel}
    */
   save(data) {
     try {
-      const url = new UrlModel(data.long_url, data.short_url);
+      if (!data.short_url || !data.long_url) return null;
+
+      const url = new UrlModel(
+        data.long_url,
+        data.short_url,
+        data.expires_at,
+        data.visible
+      );
 
       this.database.open();
 
       const insert = this.database.prepare(
-        'INSERT INTO urls (short_url, long_url, created_at, updated_at) VALUES (?, ?, ?, ?)',
+        'INSERT INTO urls (short_url, long_url, created_at, updated_at, expires_at, visible) VALUES (?, ?, ?, ?, ?, ?)'
       );
-      insert.run(url.short_url, url.long_url, url.created_at, url.updated_at);
+
+      console.log(url);
+
+      insert.run(
+        url.short_url,
+        url.long_url,
+        url.created_at,
+        url.updated_at,
+        url.expires_at,
+        url.visible | 0
+      );
 
       const select = this.database.prepare(
-        'SELECT * FROM urls WHERE short_url = ?',
+        'SELECT * FROM urls WHERE short_url = ?'
       );
 
       const row = select.get(url.short_url);
@@ -52,7 +71,7 @@ export class UrlRepository {
       this.database.open();
 
       const select = this.database.prepare(
-        'SELECT * FROM urls WHERE short_url = ?',
+        'SELECT * FROM urls WHERE short_url = ?'
       );
       const row = select.get(shortUrl);
       this.database.close();
@@ -74,7 +93,7 @@ export class UrlRepository {
       this.database.open();
 
       const select = this.database.prepare(
-        'SELECT * FROM urls WHERE long_url = ?',
+        'SELECT * FROM urls WHERE long_url = ?'
       );
       const row = select.get(long_url);
 
