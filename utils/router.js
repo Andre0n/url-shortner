@@ -53,6 +53,20 @@ class Router {
   }
 
   /**
+   * Add a new route to the router
+   * @param {string} path - The path of the route
+   * @param {function} callback - The callback function of the route
+   * @returns {void}
+   * @example router.post('/path', (req, res) => { res.send('Hello World!'); });
+   */
+  post(path, callback) {
+    if (!this.#routes[path]) {
+      this.#routes[path] = {};
+    }
+    this.#routes[path].POST = callback;
+  }
+
+  /**
    * Use a middleware function for the router
    * @param {Function} middleware - The middleware function
    * @returns {void}
