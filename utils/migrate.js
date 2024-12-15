@@ -9,6 +9,9 @@ database.exec(`
     created_at TIMESTAMP,
     updated_at TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
+    expires_at TIMESTAMP,
+    redirect_count INTEGER DEFAULT 0,
+    visible BOOLEAN DEFAULT TRUE,
     UNIQUE (long_url, short_url)
   );
 `);
