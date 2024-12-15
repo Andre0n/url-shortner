@@ -22,9 +22,11 @@ export class UrlService {
    * Shortens a URL.
    *
    * @param {string} long_url
+   * @param {Date?} [expires]
+   * @param {boolean?} [visible]
    * @returns {UrlModel} url
    */
-  shorten(long_url) {
+  shorten(long_url, expires, visible) {
     const existing_url = this.url_repository.findByLongUrl(long_url);
 
     if (existing_url) {
@@ -32,7 +34,12 @@ export class UrlService {
     }
 
     const short_url = this.#generateShortUrl();
-    const url = this.url_repository.save({ short_url, long_url });
+    const url = this.url_repository.save({
+      short_url,
+      long_url,
+      expires_at: expires,
+      visible,
+    });
 
     return url;
   }
