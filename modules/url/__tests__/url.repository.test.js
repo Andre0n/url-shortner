@@ -2,16 +2,15 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import { DatabaseSync } from 'node:sqlite';
 import { after, beforeEach, suite, test } from 'node:test';
-import { UrlRepository } from '../../modules/url/url.repository.js';
-import { UrlService } from '../../modules/url/url.service.js';
+import { UrlRepository } from '../url.repository.js';
 
-suite('UrlService', () => {
-  const database = new DatabaseSync('./test_service.db', { open: false });
+suite('UrlRepository', () => {
+  const database = new DatabaseSync('./test.db', { open: false });
   const urlRepository = new UrlRepository(database);
-  const urlService = new UrlService(urlRepository);
 
-  const data = {
+  const url = {
     long_url: 'https://www.google.com',
+    short_url: 'google',
   };
 
   beforeEach(() => {
@@ -35,22 +34,33 @@ suite('UrlService', () => {
   });
 
   after(() => {
-    fs.unlinkSync('./test_service.db');
+    fs.unlinkSync('./test.db');
   });
 
-  test('should create a new shorted url', () => {
-    const actual = urlService.shorten(data.long_url);
-    assert.notStrictEqual(actual, null);
+  test('should create a new url', () => {
+    const result = urlRepository.save(url);
+    assert.notStrictEqual(result, null);
   });
 
   test('should find a url by short url', () => {
-    const expected = urlService.shorten(data.long_url);
-    const actual = urlService.getOriginalUrl(expected.short_url);
-    assert.deepStrictEqual(actual, data.long_url);
+    const expected = urlRepository.save(url);
+    const actual = urlRepository.findByShortUrl('google');
+    assert.deepStrictEqual(actual, expected);
   });
 
   test('should return null when url is not found', () => {
-    const actual = urlService.getOriginalUrl('google');
+    const actual = urlRepository.findByShortUrl('google');
+    assert.strictEqual(actual, null);
+  });
+
+  test('should find a url by long url', () => {
+    const expected = urlRepository.save(url);
+    const actual = urlRepository.findByLongUrl('https://www.google.com');
+    assert.deepStrictEqual(actual, expected);
+  });
+
+  test('should return null when long url is not found', () => {
+    const actual = urlRepository.findByLongUrl('https://www.google.com');
     assert.strictEqual(actual, null);
   });
 });
