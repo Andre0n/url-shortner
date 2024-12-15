@@ -12,7 +12,7 @@ export class UrlModel {
     this.created_at = new Date().toISOString();
     this.updated_at = this.created_at;
     this.is_active = true;
-    this.expires_at = expires_at;
+    this.expires_at = expires_at ? expires_at.toISOString() : null;
     this.redirect_count = 0;
     this.visible = visible;
   }
